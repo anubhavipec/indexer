@@ -1,20 +1,17 @@
-use engine::tokenizer::tokenize;
+use engine::{indexer::build_inverted_index, model::Document, tokenizer::doc_splitter};
 
 mod engine;
 
 fn main() {
     println!("Hello, world!");
 
-    match tokenize("/Users/anubhav/Documents/rust-test/") {
-        Ok(tokens) => {
-            println!("{}",tokens.len());
-            // for token in tokens{
-            //     println!("{:?}",token);
-            // }
-        }
-        Err(err) => {
-            eprintln!("Error Occurred {}",err);
-        }
-        
-    }
+    let doc_storage:Vec<Document> = doc_splitter("/Users/anubhav/Documents/rust-test/","CHAPTER")
+    .unwrap_or_else(|err| {
+        eprintln!("Error occured {}",err);
+        Vec::new()
+    });
+
+    let index = build_inverted_index(doc_storage);
+
+
 }
