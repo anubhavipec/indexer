@@ -5,11 +5,12 @@ mod engine;
 fn main() {
     println!("Hello, world!");
 
-    match tokenize("/Users/anubhav/Documents/token-test/") {
+    match tokenize("/Users/anubhav/Documents/rust-test/") {
         Ok(tokens) => {
-            for token in tokens{
-                println!("{:?}",token);
-            }
+            println!("{}",tokens.len());
+            // for token in tokens{
+            //     println!("{:?}",token);
+            // }
         }
         Err(err) => {
             eprintln!("Error Occurred {}",err);
