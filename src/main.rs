@@ -5,9 +5,8 @@ use engine::{indexer::build_inverted_index, model::Document, search::search, tok
 mod engine;
 
 fn main() {
-    println!("Hello, Rust!");
 
-    let doc_storage:Vec<Document> = doc_splitter("/Users/anubhav/Documents/rust-test/","CHAPTER")
+    let doc_storage:Vec<Document> = doc_splitter("src/book1.txt","CHAPTER")
         .unwrap_or_else(|err| {
         eprintln!("Error occured {}",err);
         Vec::new()
