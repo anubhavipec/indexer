@@ -22,6 +22,8 @@ fn main() {
      */
     let args:Vec<String> = env::args().collect();
     if args.len() > 1{
+    let search_query_string = args.get(1).unwrap();
+    let search_queries:Vec<&str> = search_query_string.split("AND").collect();
 
     // take a search query input as argument
     let result = search(args.get(1).unwrap(), &index);

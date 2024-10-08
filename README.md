@@ -6,4 +6,4 @@ Here we are trying to build a very simple search engine , that can perform index
 
 We will take this simple search engine and will try to build components which will help us to scale this to handle large data sets and multiple users
 
-### NEXT STEP : MAKE TOKENIZATION AND INDEXING MULTITHREADED
+### NEXT STEP : ADD SUPPORT FOR BINARY QUERY OPERATION(eg: AND, OR )
