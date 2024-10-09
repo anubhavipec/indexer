@@ -97,7 +97,7 @@ No lifetimes needed when using owned types (String): If you own the data (like u
 By switching to Vec<String>, you're avoiding the complexity of dealing with references and lifetimes, since your QueryOperations struct now owns the data directly.
  */
 
-#[warn(unused_variables,unused_parens)]
+#[warn(unused_variables,unused_parens,unused_assignments)]
 pub fn parse_search_queries(search_query:& str) -> Result<QueryOperations,Error> {
     let mut queries:Vec<String> = Vec::new();
     if search_query.contains(AND_OPERATOR) {

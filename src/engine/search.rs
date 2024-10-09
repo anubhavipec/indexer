@@ -1,6 +1,6 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
-use super::tokenizer::tokenize;
+use super::{model::{Ops, QueryOperations}, tokenizer::tokenize};
 
 /*
 Why lifetime is  needed in this case:
@@ -24,18 +24,25 @@ In the previous example, when returning a Vec<&'a String>, you're borrowing the 
 If the return type were Vec<usize>, it would be a collection of values, not references. Values don't have lifetimes attached to them in the same way as references because they are copied and not borrowed from the original data structure.
  */
 
-pub fn search<'a>(query: &'a str, index: &'a HashMap<String,Vec<String>>) -> Vec<&'a String> {
+pub fn search<'a>(query_operations: &'a QueryOperations, index: &'a HashMap<String,HashSet<String>>) -> &'a HashSet<String> {
 
-    let mut search_result = Vec::new();
+    let mut search_result: Vec<_> = Vec::new();
 
-    let query_tokens = tokenize(query," "); 
+    if query_operations.op ==  Ops::DEFAULT {
+        for token in query_operations.queries {
+
+        }
+    }
+
+
 
     for token in query_tokens{
 
         if let Some(doc) = index.get(&token) {
-            search_result.extend(doc);
+            doc
+        }else{
+            &HashSet::new()
         }
     }
-
-    search_result
+    &HashSet::new()
 }

@@ -1,6 +1,6 @@
-use std::{collections::HashMap, env};
+use std::{collections::HashMap, env, ops};
 
-use engine::{indexer::build_inverted_index, model::Document, search::search, tokenizer::doc_splitter};
+use engine::{indexer::build_inverted_index, model::{Document, Ops, QueryOperations}, query_processing::{self, parse_search_queries}, search::search, tokenizer::doc_splitter};
 
 mod engine;
 
@@ -23,7 +23,13 @@ fn main() {
     let args:Vec<String> = env::args().collect();
     if args.len() > 1{
     let search_query_string = args.get(1).unwrap();
-    let search_queries:Vec<&str> = search_query_string.split("AND").collect();
+    let search_queries:QueryOperations = parse_search_queries(search_query_string).unwrap_or_else(|err| {
+        eprintln!("Error occured while parsing search query {}" ,err);
+        QueryOperations{op:Ops::DEFAULT,queries:Vec::new()}
+    });
+
+    
+
 
     // take a search query input as argument
     let result = search(args.get(1).unwrap(), &index);

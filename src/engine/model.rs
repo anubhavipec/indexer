@@ -3,6 +3,7 @@ pub struct Document {
     pub text:String,
 }
 
+#[derive(PartialEq,Eq)]
 pub enum Ops{
     AND,
     OR,
