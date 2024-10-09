@@ -9,8 +9,8 @@ pub enum Ops{
     DEFAULT,
 }
 
-pub struct QueryOperations<'a> {
+pub struct QueryOperations {
 
     pub op: Ops,
-    pub queries: Vec<&'a str>,
+    pub queries: Vec<String>,
 }
