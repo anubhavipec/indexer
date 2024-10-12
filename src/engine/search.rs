@@ -60,5 +60,28 @@ pub fn search<'a>(query_operations: &'a QueryOperations, index: &'a HashMap<Stri
                             .collect(); 
         }
     }
+    else if query_operations.op == Ops::OR && query_operations.queries.len() > 0 {
+
+    
+        for token in query_operations.queries.clone() {
+
+            let  result_set = index.get(token.as_str().trim()).cloned().unwrap_or_default();
+            result_hashsets.push(result_set);     
+
+        }
+        if result_hashsets.len() == 1 {
+            ops_result_set =  result_hashsets.get(0).cloned().unwrap();
+            return ops_result_set;
+        }
+
+        ops_result_set = result_hashsets[0].clone();
+        for set in result_hashsets.iter().skip(1){
+            //Intersect all sets and return the result
+            ops_result_set = ops_result_set
+                            .union(set)
+                            .cloned()
+                            .collect(); 
+        }
+    }
     ops_result_set
 }
