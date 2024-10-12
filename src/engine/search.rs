@@ -1,7 +1,7 @@
 use std::collections::{HashMap, HashSet};
 
-use super::{model::{Ops, QueryOperations}, tokenizer::tokenize};
 
+use super::model::{Ops, QueryOperations};
 /*
 Why lifetime is  needed in this case:
 
@@ -24,25 +24,41 @@ In the previous example, when returning a Vec<&'a String>, you're borrowing the 
 If the return type were Vec<usize>, it would be a collection of values, not references. Values don't have lifetimes attached to them in the same way as references because they are copied and not borrowed from the original data structure.
  */
 
-pub fn search<'a>(query_operations: &'a QueryOperations, index: &'a HashMap<String,HashSet<String>>) -> &'a HashSet<String> {
+pub fn search<'a>(query_operations: &'a QueryOperations, index: &'a HashMap<String,HashSet<String>>) ->  HashSet<String> {
 
-    let mut search_result: Vec<_> = Vec::new();
+    let mut  result_hashsets= Vec::new();
+    let mut ops_result_set= HashSet::new();
+    if query_operations.op ==  Ops::DEFAULT && query_operations.queries.len() > 0 {
+        /*
+        we will just search the first word in our index and return, will implement full phrases search in future.
+         */
+            let query_string = query_operations.queries.get(0).unwrap();
+            let result_set = index.get(query_string).unwrap();
+            return result_set.clone();
+    }
+    
+    else if query_operations.op == Ops::AND && query_operations.queries.len() > 0 {
 
-    if query_operations.op ==  Ops::DEFAULT {
-        for token in query_operations.queries {
+    
+        for token in query_operations.queries.clone() {
+
+            let  result_set = index.get(token.as_str().trim()).cloned().unwrap_or_default();
+            result_hashsets.push(result_set);     
 
         }
-    }
+        if result_hashsets.len() == 1 {
+            ops_result_set =  result_hashsets.get(0).cloned().unwrap();
+            return ops_result_set;
+        }
 
-
-
-    for token in query_tokens{
-
-        if let Some(doc) = index.get(&token) {
-            doc
-        }else{
-            &HashSet::new()
+        ops_result_set = result_hashsets[0].clone();
+        for set in result_hashsets.iter().skip(1){
+            //Intersect all sets and return the result
+            ops_result_set = ops_result_set
+                            .intersection(set)
+                            .cloned()
+                            .collect(); 
         }
     }
-    &HashSet::new()
+    ops_result_set
 }

@@ -3,13 +3,18 @@ pub struct Document {
     pub text:String,
 }
 
-#[derive(PartialEq,Eq)]
+
+/*
+for comparing enums with  == we need to use macro derive(PartialEq,Eq)
+ */
+#[derive(PartialEq,Eq,Debug)]
 pub enum Ops{
     AND,
     OR,
     DEFAULT,
 }
 
+#[derive(Debug)]
 pub struct QueryOperations {
 
     pub op: Ops,

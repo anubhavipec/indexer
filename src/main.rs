@@ -28,11 +28,10 @@ fn main() {
         QueryOperations{op:Ops::DEFAULT,queries:Vec::new()}
     });
 
-    
-
+    println!("query parsed to {:?}",search_queries);
 
     // take a search query input as argument
-    let result = search(args.get(1).unwrap(), &index);
+    let result = search(&search_queries, &index);
 
     println!("Search Result {:?}",result);
     }
