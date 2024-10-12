@@ -6,4 +6,7 @@ Here we are trying to build a very simple search engine , that can perform index
 
 We will take this simple search engine and will try to build components which will help us to scale this to handle large data sets and multiple users
 
-### NEXT STEP : ADD SUPPORT FOR BINARY QUERY OPERATION(eg: AND, OR )
+### COMPLETED :
+    #### ADD SUPPORT FOR BINARY QUERY OPERATION(eg: AND, OR )
+
+### NEXT STEP : Implement a basic ranking system like TF-IDF
