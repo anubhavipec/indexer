@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 pub struct Document {
     pub id: String,
     pub text:String,
@@ -19,4 +21,13 @@ pub struct QueryOperations {
 
     pub op: Ops,
     pub queries: Vec<String>,
+}
+
+
+#[derive(Debug)]
+pub struct InvertedIndex {
+
+    pub index: HashMap<String,HashMap<String,u16>>, // this relation whill hold token -> (document_id , frequency of that token in respective document_id)
+    pub total_docs: usize,
+
 }
