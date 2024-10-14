@@ -25,9 +25,9 @@ pub struct QueryOperations {
 
 
 #[derive(Debug)]
-pub struct InvertedIndex {
+pub struct TermFrequency{
 
-    pub index: HashMap<String,HashMap<String,u16>>, // this relation whill hold token -> (document_id , frequency of that token in respective document_id)
+    pub token_fq_map: HashMap<String,HashMap<String,u16>>, // this relation whill hold documentId -> (token  , frequency of that token in respective document_id)
     pub total_docs: usize,
 
 }

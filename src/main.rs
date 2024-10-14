@@ -1,6 +1,6 @@
 use std::{collections::HashMap, env, ops};
 
-use engine::{indexer::build_inverted_index, model::{Document, Ops, QueryOperations}, query_processing::{self, parse_search_queries}, search::search, tokenizer::doc_splitter};
+use engine::{indexer::build_inverted_index, model::{Document, Ops, QueryOperations, TermFrequency}, query_processing::{self, parse_search_queries}, ranking::calculate_term_frequency, search::search, tokenizer::doc_splitter};
 
 mod engine;
 
@@ -12,7 +12,7 @@ fn main() {
         Vec::new()
     });
 
-    let index = build_inverted_index(doc_storage)
+    let index = build_inverted_index(&doc_storage)
         .unwrap_or_else(|err|{
         eprintln!("Error Occured while building index {}",err);
         HashMap::new()
@@ -20,6 +20,16 @@ fn main() {
     /*
     TODO: for next interation ==>  we can chain doc_splitter and build_inverted_index, 
      */
+    let mut  tf_map = HashMap::new();
+    for document in &doc_storage{
+        
+        tf_map.insert(document.id.to_string(), calculate_term_frequency(&document).unwrap());
+        
+    }
+    let num_of_docs = &doc_storage.len();
+    let tf = TermFrequency{token_fq_map:tf_map,total_docs:num_of_docs.clone()};
+    
+    
     let args:Vec<String> = env::args().collect();
     if args.len() > 1{
     let search_query_string = args.get(1).unwrap();

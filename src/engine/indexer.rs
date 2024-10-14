@@ -8,7 +8,7 @@ use super::{model::Document, tokenizer::tokenize};
     this will help us to do Binary Operations on search
 
  */
-pub fn build_inverted_index(document_store:Vec<Document>) -> Result<HashMap<String,HashSet<String>>,Error> {
+pub fn build_inverted_index(document_store:&Vec<Document>) -> Result<HashMap<String,HashSet<String>>,Error> {
 
     let mut index:HashMap<String,HashSet<String>> = HashMap::new();
 
