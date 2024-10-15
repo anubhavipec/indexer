@@ -1,9 +1,9 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use super::{model::Document, tokenizer::tokenize};
 
 
-struct InvertedIndex {
+pub struct InvertedIndex {
 
     pub index: HashMap<String, HashMap<String,u16>>,
     pub doc_count: usize,
@@ -35,6 +35,45 @@ impl InvertedIndex{
                 self.doc_count += 1;
             }
     }
+
+    pub fn search_with_default_ops(&self, query:&str)-> HashSet<String>{
+
+            self.index.get(query)
+            .map(|doc_map| doc_map.keys().cloned().collect())
+            .unwrap_or_else(HashSet::new)
+    }
+
+    pub fn search_with_and_ops(&self, queries:Vec<String>) -> HashSet<String> {
+        let mut result = HashSet::new();
+
+        for (i,query) in queries.iter().enumerate() {
+
+            let docs = self.search_with_default_ops(query);
+            if i == 0 {
+                result = docs;
+            }else {
+                result = result.intersection(&docs).cloned().collect();
+            }
+        }
+        result
+    }
+
+    pub fn search_with_or_ops(&self, queries:Vec<String>) -> HashSet<String> {
+        let mut result = HashSet::new();
+
+        for (i,query) in queries.iter().enumerate() {
+
+            let docs = self.search_with_default_ops(query);
+            if i == 0 {
+                result = docs;
+            }else {
+                result = result.union(&docs).cloned().collect();
+            }
+        }
+        result
+    }
+
+
 
 
 
